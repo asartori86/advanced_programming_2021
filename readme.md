@@ -1,4 +1,4 @@
-# Advanced Programming [![Build Status](https://api.travis-ci.org/asartori86/advanced_programming_2020.svg?branch=master)](https://travis-ci.org/asartori86/advanced_programming_2020)
+# Advanced Programming [![Build Status](https://api.travis-ci.org/asartori86/advanced_programming_2021.svg?branch=master)](https://travis-ci.org/asartori86/advanced_programming_2021)
 
 [SISSA webpage](http://www.matsissa.it/course/phd-course-master-course/advanced-programming-2)
 
@@ -43,12 +43,12 @@ First lecture **Friday, October 8, 2021**
 - Very first time `(N==0)`
   - open a terminal
   - `cd` in a suitable folder
-  - `git clone https://github.com/asartori86/advanced_programming_2020.git`
-  - `cd advanced-programming_2020`
+  - `git clone https://github.com/asartori86/advanced_programming_2021.git`
+  - `cd advanced-programming_2021`
   - take a look at [software carpentry lecture](http://swcarpentry.github.io/git-novice/) and [pro git book](https://git-scm.com/book/en/v2) 
 - `N > 0`
   - open a terminal
-  - `cd` to the folder `advanced-programming_2020`
+  - `cd` to the folder `advanced-programming_2021`
   - `git pull origin master`
 - if(conflict)
   - ask
