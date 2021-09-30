@@ -20,6 +20,10 @@ First lecture **Friday, October 8, 2021**, then each Monday and Friday.
 - Monday 14-16
 - Friday 14-18
 
+## Contact me
+- email: `asartori@ictp.it`, `alberto.sartori@sissa.it`
+- office: 107 old SISSA building via Beirut
+
 ## Prerequisites
 - Familiarity with linux terminal and a text editor (e.g., emacs, vim)
 - A bit of knowledge of git
