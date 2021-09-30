@@ -1,18 +1,9 @@
-sudo: false
+dist: bionic
 language: cpp
 
-addons:
-  apt:
-    sources:
-      - llvm-toolchain-precise-3.8
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-6
-      - clang-3.8
-
 env:
-  - COMPILER=g++-6
-  - COMPILER=clang++-3.8
+  - COMPILER=g++
+  - COMPILER=clang++
 
 script:
   - make CXX=$COMPILER
