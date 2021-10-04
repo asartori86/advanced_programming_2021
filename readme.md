@@ -15,7 +15,7 @@ Syllabus:
 - Remotely: via Microsoft Teams. Please join the team [here](https://teams.microsoft.com/l/team/19%3aTegYLBJNdVQcFJpcipzwG8ILBHr_PoZ_8rF-FyhOx1I1%40thread.tacv2/conversations?groupId=3c567ab0-fc8d-4af8-9fb5-5f7f4e6fcf54&tenantId=a54b3635-128c-460f-b967-6ded8df82e75). If you cannot join it, please let me know.
 
 ## When
-First lecture **Friday, October 8, 2021**, then each Monday and Friday.
+First lecture **Monday, October 11, 2021**, then each Monday and Friday.
 
 - Monday 14-16
 - Friday 14-18
