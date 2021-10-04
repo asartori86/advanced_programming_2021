@@ -59,6 +59,15 @@ int main() {
   var = a * b;
   var = a % var;  // modulus operator just between integers
 
+  // bit-wise operations
+  int x = var & a;  // AND, 101 & 001 --> 001
+  x = var | a;      // OR,  101 | 001 --> 101
+  x = var ^ a;      // XOR, 101 ^ 001 --> 110
+
+  x &= a;
+  x |= a;
+  x ^= a;
+
   bool test;
   test = a == b;
   test = a < b;
