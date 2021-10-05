@@ -68,6 +68,12 @@ int main() {
   x |= a;
   x ^= a;
 
+  x = 1 << 3;   // 8
+  x = 16 >> 2;  // 4
+
+  x <<= 2;  // 16
+  x >>= 3;  // 2
+
   bool test;
   test = a == b;
   test = a < b;
