@@ -21,6 +21,7 @@ int main() {
   std::cout << "cxx:\texpected 7 3 --> " << a << " " << b << "\n";
 }
 
+//varibles with different scopes are unrelated
 void buggy_swap(int a, int b) {
   int tmp = b;
   b = a;

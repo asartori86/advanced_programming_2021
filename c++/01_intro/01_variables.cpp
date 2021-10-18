@@ -97,7 +97,7 @@ int main() {
 
   int ve{int(ce * a)};  // ok create a variable from constexpr
 
-  // constexpr int  n_ce {ve*8.1234/M_PI}; // error
+  // constexpr int  n_ce {ve*8.1234/M_PI}; // error, because a can change 
 
   // cast to void to suppress warning of unused variable
   (void)ve;
