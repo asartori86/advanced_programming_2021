@@ -1,9 +1,10 @@
 SRC = 01_auto.cpp            \
-      02_functions.cpp	     \
+      02_auto_functions.cpp  \
       03_overloading.cpp     \
       04_templates.cpp	     \
       05_static_arrays.cpp   \
-      06_dynamic_arrays.cpp  
+      06_dynamic_arrays.cpp  \
+      07_constexpr_functions.cpp
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -g -std=c++14

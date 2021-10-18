@@ -12,7 +12,7 @@ PPP: chap 20.5.2
 CPL: chap 2.2.2, chap 6.3.6
 
 
-## 02_functions.cpp
+## 02_auto_functions.cpp
 [link to file](./02_functions.cpp)
 
 A function is a named sequence of statements. A function can return a result (return value), and since c++14 can be declared as `auto`.
@@ -68,7 +68,12 @@ PPP: 17.4
 CPL: 11.2
 
 
+## 07_constexpr_functions.cpp
 
+[link to file](./07_constexpr_functions.cpp)
+
+
+Since c++11, we have different ways to perform computations at compile time. In this example, we see how to use the `constexpr` keyword and basic template metaprogramming.
 
 
 
