@@ -52,6 +52,7 @@ flags operator|(const flags f1, const flags f2) {
                             static_cast<unsigned int>(f2));
 }
 
+// implicit conversion to bool
 unsigned int operator&(const flags f1, const flags f2) {
   return static_cast<unsigned int>(static_cast<unsigned int>(f1) &
                                    static_cast<unsigned int>(f2));
@@ -63,9 +64,9 @@ flags& operator|=(flags& f1, const flags f2) {
 }
 
 void compute_multiple_flags(flags& f) {
-  if (f & flags::flag4)
+  if (f & flags::flag4)  // f4 implies flag1 and flag2
     f |= (flags::flag1 | flags::flag2);
-  if (f & flags::flag5)
+  if (f & flags::flag5)  // f5 implies flag3
     f |= flags::flag3;
 }
 

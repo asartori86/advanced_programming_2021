@@ -4,8 +4,9 @@ SRC = 01_enum.cpp                    \
       04_why_scoped.cpp              \
       05_struct_class.cpp            \
       06_operator_overloading.cpp    \
-      07_constructor_destructor.cpp  \
-      08_template_class.cpp
+      07_multiple_flags.cpp          \
+      08_constructor_destructor.cpp  \
+      09_template_class.cpp
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -g -std=c++14
