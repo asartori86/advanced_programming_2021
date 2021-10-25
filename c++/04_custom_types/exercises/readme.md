@@ -74,9 +74,3 @@ Implement the following external helper functions (i.e., they are not part of th
 - try to avoid code duplication
 
 
-
-
-## Optional: range-for-loop
-
-Implement the range-for-loop for the class `Vector<class T>` we have written.
-
