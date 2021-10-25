@@ -76,21 +76,6 @@ Implement the following external helper functions (i.e., they are not part of th
 
 
 
-## C++14
-
-Modify the class `Vector<typename T>` presented during the lecture exploiting all the of C++14 features you know. Can you see any benefit?
-
-*Hints*:
-
-- remember to compile with `-std=c++14`
-
-
-
-## Smart usage of `enums`
-Study and try to understand the file [multiple_flags.cpp](./multiple_flags.cpp)
-
-
-
 ## Optional: range-for-loop
 
 Implement the range-for-loop for the class `Vector<class T>` we have written.
