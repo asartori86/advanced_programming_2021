@@ -84,7 +84,7 @@ A naive implementation of a vector class, using the template for the type stored
 
 
 
-###References:
+### References:
 
 [PPP] = Programming: Principles and Practice using C++ (Second Edition), Bjarne Stroustrup, Addison-Wesley 2014, ISBN 978-0-321-99278-9
 
