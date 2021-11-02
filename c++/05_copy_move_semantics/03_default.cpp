@@ -26,7 +26,7 @@ int main() {
   std::cout << y1.a << "--" << y1.b << "--" << y1.c << "\n";
   std::cout << y2.a << "--" << y2.b << "--" << y2.c << "\n";
 
-  // Y y3{y2}; // error: call to a deleted function
+  // Y y3{y2}; // error: call a deleted function
 
   return 0;
 }

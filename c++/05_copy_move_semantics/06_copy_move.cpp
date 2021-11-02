@@ -4,7 +4,7 @@
 
 template <typename T>
 class Vector {
-  std::size_t _size
+  std::size_t _size;
   std::unique_ptr<T[]> elem;
 
  public:
@@ -22,8 +22,10 @@ class Vector {
 
   // default ctor
   Vector() { std::cout << "default ctor\n"; }  // _size uninitialized
-  // Vector() : _size{}, elem{} { std::cout << "default ctor\n"; } // this could
-  // be better Vector() = default;
+  // Vector() : _size{}, elem{} { std::cout << "default ctor\n"; }
+
+  // this could be better
+  // Vector() = default;
 
   ~Vector() = default;
 
@@ -67,10 +69,8 @@ class Vector {
   std::size_t size() const { return _size; }
 
   // range-for
-  
-  const T* begin() const {
-    return &elem[0];
-  }
+
+  const T* begin() const { return &elem[0]; }
   T* begin() { return &elem[0]; }
 
   const T* end() const { return &elem[_size]; }
@@ -88,12 +88,7 @@ Vector<T>::Vector(const Vector& v) : _size{v._size}, elem{new T[_size]} {
 template <typename T>
 Vector<T>& Vector<T>::operator=(const Vector& v) {
   std::cout << "copy assignment (\n";
-
-  // we could decide that this operation is allowed if and only if
-  // _size == v._size
-  //
-
-  elem.reset();              // first of all clean my memory
+  elem.reset();              // clear memory
   auto tmp = v;              // then use copy ctor
   (*this) = std::move(tmp);  // finally move assignment
 
@@ -101,9 +96,15 @@ Vector<T>& Vector<T>::operator=(const Vector& v) {
   // and we can do not reset and call new again if the sizes are suitable
 
   std::cout << ")\n";
-  return *this;
+  return *this;  // this is needed to support x=y=z;
 
   // is this approach consistent with self-assignment vx=vx?
+
+  // for many years, copy assignment was written as follows
+  // ~Vector();             // clear memory
+  // new (this) Vector{v};  // placement-new on my self using copy ctor
+  // return *this;
+  // can you imagine why it has been changed?
 }
 
 template <typename T>
@@ -111,7 +112,7 @@ template <typename T>
 Vector<T> operator+(const Vector<T>& lhs, const Vector<T>& rhs) {
   const auto size = lhs.size();
 
-  // how we should check that the two vectors have the same size?
+  // what should we do if vectors have differnt sizes?
 
   Vector<T> res(size);
   for (std::size_t i = 0; i < size; ++i)

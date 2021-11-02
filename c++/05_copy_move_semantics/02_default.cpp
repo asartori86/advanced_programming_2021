@@ -4,7 +4,7 @@
 struct S {
   int a;
   double b;
-  std::string s;  // default ctor of string set s to empty string
+  std::string s;  // default ctor of string sets s to empty string
 };
 
 int main() {

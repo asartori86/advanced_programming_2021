@@ -36,3 +36,5 @@ clean:
 .PHONY: clean
 
 01_surprise.x: CXXFLAGS += -Wno-uninitialized
+07_explicit.x: CXXFLAGS += -Wno-unused-parameter
+
