@@ -6,11 +6,13 @@ Implement a linked list with the following design. You are free to add more func
 ```c++
 enum class Insertion_method { push_back, push_front };
 
-template <class value_type>
+template <typename T>
 class List {
  public:
+  using value_type = T;
+
   // insert a new node with the value v according to the method m
-  // this method should be used to fill the list
+  // this method is used to fill the list
   void insert(const value_type& v, const Insertion_method m);
 
   // return the size of the list
@@ -20,23 +22,23 @@ class List {
   void reset();
 
   // constructor(s) for List
-  
+
   // copy semantics (deep copy)
   // move semantics
-  
+
   // destructor
 
  private:
- 
   // private struct node with the proper value_type
+  // why is a good idea nesting node?
   struct node {
     value_type value;
     std::unique_ptr<node> next;
 
     // implement suitable constructor(s) for node
-    
+
     // copy and move semantics if needed
-    
+
     // destructor
   };
 
@@ -48,10 +50,9 @@ class List {
 
   std::unique_ptr<node> head;
   std::size_t _size;
-};
 
-template <class T>
-std::ostream& operator<<(std::ostream& os, const List<T>& l);
+  friend std::ostream& operator<<(std::ostream& os, const List& l);
+};
 
 ```
 
@@ -84,7 +85,7 @@ std::ostream& operator<<(std::ostream& os, const List<T>& l);
 
 You are required to use blocks of memory (*heap*) locations which are linked together. Each of these blocks contains one component that may refer to another block. If each block (except the final one) contains a pointer to the next block, so that they form a chain, then the entire collection of linked blocks is called a **linked list**. The blocks of memory locations of a linked list are usually called *nodes*.
 
-Every node of a linked list, except the final one, contains a pointer to its immediate *successor*, and every node except the first one is pointed to by its immediate *predecessor*. The pointer member of the last node has the value `nullptr`.
+Each node of a linked list, except the final one, points to its immediate *successor*, and each node except the first one is pointed to by its immediate *predecessor*. The pointer member of the last node has the value `nullptr`.
 
 The private member `head` points to the first element of the list. 
 
