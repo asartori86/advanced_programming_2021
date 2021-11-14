@@ -64,9 +64,9 @@ PPP: 9.6
 CPL: 3.2.1.1 (for a quick example), chap 18 for all the details
 
 
-## 07_constructor_destructor.cpp
+## 08_constructor_destructor.cpp
 
-[link to file](./07_constructor_destructor.cpp)
+[link to file](./08_constructor_destructor.cpp)
 
 This example introduces you to the concepts of *constructor* and *destructor* of a class. Here you can also find the first example of *operator overloading*.
 
@@ -75,16 +75,16 @@ CPL: chap 16.2.5 constructors, chap 17.2 constructors and destructors, chap 18 o
 
 
 
-## 08_template_class.cpp
+## 09_template_class.cpp
 
-[link to file](./08_template_class.cpp)
+[link to file](./09_template_class.cpp)
 
 A naive implementation of a vector class, using the template for the type stored in the vector.
 
 
 
 
-###References:
+### References:
 
 [PPP] = Programming: Principles and Practice using C++ (Second Edition), Bjarne Stroustrup, Addison-Wesley 2014, ISBN 978-0-321-99278-9
 
