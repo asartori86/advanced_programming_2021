@@ -13,22 +13,22 @@ I find(I first, I last, T value) {
   return first;
 
   // sentinel
-  
-  // --last;
-  // auto tmp = std::move(*last);
-  // if (tmp == value)
-  //   return last;
-  // *last = value;
 
-  // while (*first != value)
-  //   ++first;
+  --last;
+  auto tmp = std::move(*last);
+  if (tmp == value)
+    return last;
+  *last = value;
 
-  // *last = std::move(tmp);
+  while (*first != value)
+    ++first;
 
-  // if (first == last)
-  //   return ++last;
+  *last = std::move(tmp);
 
-  // return first;
+  if (first == last)
+    return ++last;
+
+  return first;
 }
 
 template <typename T>

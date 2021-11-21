@@ -3,11 +3,11 @@
 #include <iostream>
 #include <memory>
 
-// #define AP_NOEXCEPT \
-//   \
-// #ifndef NDEBUG \
-// noexcept \
-// #endif
+#ifndef NDEBUG
+#  define AP_NOEXCEPT
+#else
+#  define AP_NOEXCEPT noexcept
+#endif
 
 template <typename T>
 class Matrix {
@@ -50,12 +50,13 @@ class Matrix {
   T& operator[](const std::size_t i) noexcept { return elem[i]; }
   const T& operator[](const std::size_t i) const noexcept { return elem[i]; }
 
-  T& operator()(const std::size_t i, const std::size_t j) {
+  T& operator()(const std::size_t i, const std::size_t j) AP_NOEXCEPT {
     AP_ASSERT_LT(i, _rows);
     AP_ASSERT_LT(j, _cols);
     return (*this)[i * _cols + j];
   }
-  const T& operator()(const std::size_t i, const std::size_t j) const {
+  const T& operator()(const std::size_t i,
+                      const std::size_t j) const AP_NOEXCEPT {
     AP_ASSERT_LT(i, _rows);
     AP_ASSERT_LT(j, _cols);
     return (*this)[i * _cols + j];
