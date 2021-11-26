@@ -1,0 +1,133 @@
+% GMGFP
+\documentclass{beamer}
+\usepackage{caption}
+\captionsetup[table]{name=, labelformat = empty, labelsep=newline}
+
+%\usepackage{beamerthemeblackboard}
+\usepackage{natbib}
+\usepackage{calc}
+\usepackage{empheq}
+\usepackage{subfig}
+\usepackage{siunitx}
+\usepackage{fontenc}
+\usepackage{amsmath}
+\usepackage{array}
+\usepackage{wasysym}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\usepackage{multirow}
+\usepackage[absolute,overlay]{textpos}
+%% \usepackage{bbding}
+\definecolor{links}{HTML}{2A1B81}
+\hypersetup{colorlinks,linkcolor=,urlcolor=links}
+\usepackage{listings}
+\lstloadlanguages{Matlab}
+\lstloadlanguages{C++}
+\definecolor{MyDarkGreen}{rgb}{0.0,0.4,0.0}
+\lstset{language=C++,
+%frame=single,
+basicstyle=\small,
+tabsize=4,
+showstringspaces=false,
+numbers=none,
+numberstyle=\tiny,
+breaklines=true,
+firstnumber=1,
+language=C++,
+basicstyle=\ttfamily,
+keywordstyle=\color{blue}\ttfamily,
+stringstyle=\color{red}\ttfamily,
+commentstyle=\color{gray}\ttfamily,
+morecomment=[l][\color{blue}]{\#}
+}
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata}
+\usetikzlibrary{positioning}
+
+\newcommand{\ped}[1]{_{\mathrm{#1}}}
+\newcommand{\up}[1]{^{\mathrm{#1}}}
+\renewcommand{\r}{\mathbf{r}}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\dund}[1]{\underline{\underline{#1}}}
+\newcommand{\und}[1]{\underline{#1}}
+\newcommand{\mmu}{\boldsymbol\mu}
+
+
+\usetheme{nasatalk}
+
+\AtBeginSection[]{\frame{\tableofcontents[currentsection,hideallsubsections]}}
+\begin{document}
+\title[STL]{A quick overview of the C++ Standard (Template) Library}
+\subtitle{Advanced Programming}
+
+
+\logo{%
+  \makebox[0.99\paperwidth]{%
+    \includegraphics[height=0.7cm,keepaspectratio]{img/logoMHPC2.png}%
+    \hfill%
+    \includegraphics[height=1cm,keepaspectratio]{img/sissa_logo.jpg}%
+  }%
+}%
+
+
+\author[Alberto Sartori]{Alberto Sartori}
+ 
+
+\date[November 26, 2021]{November 26, 2021}
+
+\setbeamercolor{caption name}{fg=white}
+
+\begin{frame}%[noframenumbering]
+  \maketitle
+\end{frame}
+
+\usebackgroundtemplate{%
+	%
+}
+
+\logo{%
+  \vspace*{-0.2cm}
+  \makebox[0.99\paperwidth]{%
+    \includegraphics[height=0.4cm,keepaspectratio]{img/logoMHPC2.png}%
+    \hfill%
+    \includegraphics[height=0.7cm,keepaspectratio]{img/sissa_logo.png}%
+  }%
+}%
+
+\begin{frame}%[noframenumbering]
+  \frametitle{Outline}
+  \tableofcontents[hideallsubsections]
+\end{frame}
+\input{tex_files/summary.tex}
+\input{tex_files/containers.tex}
+\input{tex_files/iterators.tex}
+\input{tex_files/algorithms.tex}
+\input{tex_files/function_objects.tex}
+\section*{}
+\begin{frame}
+  \centering
+  \includegraphics[width=0.8\textwidth]{img/alexfest.jpg}
+\end{frame}
+			
+\defbeamertemplate*{footline}{for appendix}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    %\usebeamerfont{author in head/foot}\insertshortauthor
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\insertshortinstitute
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+%    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\usebackgroundtemplate{}
+%% \input{tex_files/bckup_slides.tex}
+				
+\end{document}

@@ -1,0 +1,150 @@
+\section{Algorithms}
+\subsection{Introduction}
+\begin{frame}
+  \frametitle{STL algorithms}
+  \begin{itemize}
+  \item about 80 algorithms in \texttt{<algorithm> and <numeric>}
+  \item[]
+  \item operate on \emph{sequences}
+    \begin{itemize}
+    \item pair of iterators for inputs $[b:e)$
+    \item single iterator for output $[b2: b2+(e-b))$
+    \end{itemize}
+  \item[]
+  \item can take functions or function objects
+  \item[]
+  \item report failure (e.g. not found) by returning the end of the sequence
+  \end{itemize}
+\end{frame}
+\subsection{Quick examples}
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{Sequences}
+\begin{lstlisting}
+  #include <algorithm>
+  #include <vector>
+  
+  int main(){
+    std::vector<double> v1;
+    ...
+    std::vector<double> v2{v1.size()};
+    std::sort(v1.begin(), v1.end());
+    std::copy(v1.begin(), v1.end(), v2.begin());
+  }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{Sequences}
+\begin{lstlisting}
+#include <numeric>
+#include <vector>
+  
+int main(){
+  std::vector<double> v1;
+  ...
+  double sum{0};
+  sum = std::accumulate(v1.begin(),v1.end(),sum);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{User-defined functions}
+\begin{lstlisting}
+#include <numeric>
+#include <vector>
+
+double my_f(const double& a, const double& b){
+ if (std::abs(b - 2.2) < 1e-12)
+  return a;
+ return a+b;
+}
+int main(){
+ std::vector<double> v1;
+ ...
+ double sum{0};
+ sum = std::accumulate(first,last,sum,my_f);
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{Lambda functions}
+\begin{lstlisting}
+#include <numeric>
+#include <vector>
+int main(){
+ std::vector<double> v1;
+ ...
+ auto my_f = [](const double& a, const double &b) -> double {
+   return std::abs(b-2.2) < 1e-12 ? a : a+b;
+ };
+ double sum{0};
+ sum = std::accumulate(first,last,sum,my_f);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{Generic lambdas (since C++14)}
+\begin{lstlisting}
+#include <numeric>
+#include <vector>
+int main(){
+ std::vector<double> v1;
+ ...
+ auto my_f = [](const auto& a, const auto& b) {
+   return std::abs(b-2.2) < 1e-12 ? a : a+b;
+ };
+ double sum{0};
+ sum = std::accumulate(first,last,sum,my_f);
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{Generic lambdas (since C++14)}
+\begin{lstlisting}
+#include <numeric>
+#include <vector>
+int main(){
+ std::vector<double> v1;
+ ...
+ double sum{0};
+ sum = std::accumulate(first,last,sum,
+                [](const auto& a, const auto& b) {
+   return std::abs(b-2.2) < 1e-12 ? a : a+b;} );
+}
+\end{lstlisting}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \frametitle{Examples}
+  \framesubtitle{Failure check}
+\begin{lstlisting}
+#include <algorithm>
+#include <vector>
+  
+int main(){
+  std::vector<double> v1;
+  ...
+  auto it = std::find(v1.begin(), v1.end(), 2.2);
+
+  if(it != v1.end())
+    std::cout << "found " << *it << std::endl;
+  else
+    std::cout << "not found" << std::endl;
+}
+  
+\end{lstlisting}
+\end{frame}

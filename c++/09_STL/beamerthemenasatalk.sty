@@ -1,0 +1,48 @@
+% Copyright 2004 by Manuel Carro <mcarro@fi.upm.es>
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+\mode<presentation>
+
+\newif\ifbeamer@secheader
+\beamer@secheaderfalse
+
+\DeclareOptionBeamer{secheader}{\beamer@secheadertrue}
+\ProcessOptionsBeamer
+
+
+\usecolortheme{rose}
+\useinnertheme[shadow]{rounded}
+\usecolortheme{dolphin}
+\useoutertheme{nasalines}
+
+
+
+
+\usepackage[scaled]{helvet}
+%\usepackage{eulervm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\setbeamertemplate{items}[circle]
+\setbeamertemplate{itemize subitem}[triangle]
+
+\definecolor{nasablue}{RGB}{0,96,169}
+\definecolor{nasared}{RGB}{239,61,66}
+\definecolor{orionblue}{RGB}{15,16,64}
+\setbeamercolor{itemize item}{fg=nasablue}
+\setbeamercolor{itemize subitem}{fg=nasablue}
+\setbeamercolor{itemize subsubitem}{fg=nasablue}
+
+\usecolortheme[named=nasablue]{structure}
+
+\newcommand{\zapspace}{\topsep=0pt\partopsep=0pt\itemsep=0pt\parskip=0pt}
+
+\setbeamertemplate{navigation symbols}{}
+\mode
+<all>
