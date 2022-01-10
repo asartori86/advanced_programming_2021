@@ -7,5 +7,6 @@
 	+$(MAKE) $@ -C 06_error_handling
 	+$(MAKE) $@ -C 07_live
 	+$(MAKE) $@ -C 08_inheritance
+	+$(MAKE) $@ -C 11_symbols
 
 
