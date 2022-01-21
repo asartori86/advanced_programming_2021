@@ -81,7 +81,7 @@ class stack_pool{
   stack_type end() const noexcept { return stack_type(0); }
 
   T& value(stack_type x);
-  const T& value(stack_type x);
+  const T& value(stack_type x) const;
 
   stack_type& next(stack_type x);
   const stack_type& next(stack_type x) const;
