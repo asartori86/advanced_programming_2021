@@ -39,10 +39,7 @@ class stack_pool {
   // const_iterator cbegin(stack_type x) const;
   // const_iterator cend(stack_type) const;
 
-  stack_type new_stack()  // return an empty stack
-  {
-    return stack_type{0};
-  }
+  stack_type new_stack() { return stack_type{0}; }  // return an empty stack
 
   void reserve(size_type n) { pool.reserve(n); }
 
@@ -81,16 +78,32 @@ class stack_pool {
       return pool.size();
     } else {
       node_t& n = node(free_nodes);
+      stack_type new_free_nodes = n.next;
       n.next = head;
       n.value = val;
       stack_type new_head = free_nodes;
-      // free_nodes = pop(free_nodes);
+      free_nodes = new_free_nodes;
+      
       return new_head;
     }
   };
   // stack_type push(T&& val, stack_type head);
 
-  stack_type pop(stack_type x);  // delete first node
+  stack_type pop(stack_type x) {  // delete first node
+    if (empty(x)) {
+      std::cout << "Trying to pop from an empty stack" << std::endl;
+      exit(66);
+    }
+
+    stack_type old_x = x;
+    node_t& node_x = node(x);
+    x = node_x.next;
+    node_x.next = free_nodes;
+    free_nodes = old_x;
+    return x;
+  };
 
   stack_type free_stack(stack_type x);  // free entire stack
+
+  stack_type get_free_nodes(){return free_nodes;}; // only for debug
 };
