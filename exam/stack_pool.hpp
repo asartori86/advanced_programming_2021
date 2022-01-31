@@ -35,6 +35,8 @@ class _iterator {
     return tmp;
   }
 
+  /* All the following functions assume only iterators originated
+  from the same stack pool are compared */
   _iterator& operator=(const _iterator& x) {
     current = x.current;
     return *this;
@@ -71,6 +73,12 @@ class stack_pool {
   explicit stack_pool(size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
   };  // reserve n nodes in the pool
+
+  stack_pool(const stack_pool&) = default;
+  stack_pool(stack_pool&&) = default;
+
+  stack_pool& operator=(const stack_pool&) = default;
+  stack_pool& operator=(stack_pool&&) = default;
 
   using iterator =
       _iterator<value_type, stack_type, stack_pool<value_type, stack_type>>;
