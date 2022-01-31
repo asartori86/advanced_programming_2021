@@ -5,6 +5,11 @@ int& foo(int& i) {
   return i;
 }
 
+
+
+
+
+
 int main() {
   stack_pool<int, std::size_t> pool{22};
   auto s = pool.new_stack();
@@ -20,6 +25,11 @@ int main() {
   std::cout << pool.value(s2) << std::endl;
   std::cout << "free: " << pool.get_free_nodes() << std::endl;
   s2 = pool.push(6, s2);
+  std::cout <<"s2: " <<s2<<std::endl;
+  s2 = pool.push(7, s2);
+  std::cout <<"s2: " <<s2<<std::endl;
+  std::cout<<"s2 next: "<<pool.next(s2)<<std::endl;
+ 
   std::cout << pool.value(s2) << std::endl;
   std::cout << "free: " << pool.get_free_nodes() << std::endl;
 
@@ -29,6 +39,9 @@ int main() {
 
   std::cout << "s: " << s << std::endl;
   std::cout << "s2: " << s2 << std::endl;
-
+  std::cout<<"\nFOR RANGE LOOP\n";
+  for(auto i=pool.begin(s2);i!=pool.end(s2);++i)
+    std::cout<<*i<<std::endl;
+    
   return 0;
 }
