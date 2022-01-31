@@ -39,6 +39,11 @@ public:
     return tmp;
   }
 
+  _iterator& operator=(const _iterator& x){
+    current=x.current;
+    return *this;
+  }
+
   friend bool operator==(const _iterator& x, const _iterator& y) {
     return x.current == y.current;
   }
@@ -155,7 +160,11 @@ class stack_pool {
     return x;
   };
 
-  stack_type free_stack(stack_type x);  // free entire stack
+  stack_type free_stack(stack_type x){
+    while(!empty(x))
+      x=pop(x);
+    return x;
+  }  // free entire stack
 
   stack_type get_free_nodes() { return free_nodes; };  // only for debug
 };
