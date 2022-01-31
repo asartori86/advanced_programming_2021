@@ -17,12 +17,12 @@ class stack_pool {
   const node_t& node(stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
-//   stack_pool() : pool{}, free_nodes{1} {};  // defaul ctor
   stack_pool() : stack_pool{0} {};  // defaul ctor
-  explicit stack_pool(size_type n) : pool{n}, free_nodes{1} {}; // reserve n nodes in the pool
+  explicit stack_pool(size_type n)
+      : pool{n}, free_nodes{1} {};  // reserve n nodes in the pool
 
-  using iterator = ...;
-  using const_iterator = ...;
+  //   using iterator = ...;
+  //   using const_iterator = ...;
 
   iterator begin(stack_type x);
   iterator end(stack_type);  // this is not a typo
@@ -34,6 +34,7 @@ class stack_pool {
   const_iterator cend(stack_type) const;
 
   stack_type new_stack();  // return an empty stack
+  { return stack_type{0}; } 
 
   void reserve(size_type n);   // reserve n nodes in the pool
   size_type capacity() const;  // the capacity of the pool
