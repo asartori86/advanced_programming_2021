@@ -1,10 +1,7 @@
 #include "stack_pool.hpp"
 #include <iostream>
 
-
-
-
-//usefull function to check const iterator ! 
+//useful function to check const iterator ! 
 void foo( stack_pool<int,std::size_t>& pool,std::size_t s2){
   for(auto i=pool.begin(s2);i!=pool.end(s2);++i){
     auto b=pool.begin(s2);
