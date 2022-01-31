@@ -1,3 +1,5 @@
+#include <iostream>
+#include <vector>
 template <typename T, typename N = std::size_t>
 class stack_pool {
   struct node_t {
@@ -24,16 +26,16 @@ class stack_pool {
   //   using iterator = ...;
   //   using const_iterator = ...;
 
-  iterator begin(stack_type x);
-  iterator end(stack_type);  // this is not a typo
+  // iterator begin(stack_type x);
+  // iterator end(stack_type);  // this is not a typo
 
-  const_iterator begin(stack_type x) const;
-  const_iterator end(stack_type) const;
+  // const_iterator begin(stack_type x) const;
+  // const_iterator end(stack_type) const;
 
-  const_iterator cbegin(stack_type x) const;
-  const_iterator cend(stack_type) const;
+  // const_iterator cbegin(stack_type x) const;
+  // const_iterator cend(stack_type) const;
 
-  stack_type new_stack();  // return an empty stack
+  stack_type new_stack()  // return an empty stack
   { return stack_type{0}; }
 
   void reserve(size_type n) { pool.reserve(n); }
