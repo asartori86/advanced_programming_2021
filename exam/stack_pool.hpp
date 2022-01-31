@@ -18,7 +18,7 @@ class stack_pool {
 
  public:
   stack_pool() : pool{}, free_nodes{1} {};  // defaul ctor
-  explicit stack_pool(size_type n);         // reserve n nodes in the pool
+  explicit stack_pool(size_type n) : pool{n}, free_nodes{1} {}; // reserve n nodes in the pool
 
   using iterator = ...;
   using const_iterator = ...;
