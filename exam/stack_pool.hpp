@@ -19,7 +19,7 @@ class stack_pool {
  public:
   stack_pool() : stack_pool{0} {};  // defaul ctor
   explicit stack_pool(size_type n)
-      : pool{n}, free_nodes{1} {};  // reserve n nodes in the pool
+      : pool{n}, free_nodes{new_stack()} {};  // reserve n nodes in the pool
 
   //   using iterator = ...;
   //   using const_iterator = ...;
@@ -34,16 +34,25 @@ class stack_pool {
   const_iterator cend(stack_type) const;
 
   stack_type new_stack();  // return an empty stack
-  { return stack_type{0}; } 
+  { return stack_type{0}; }
 
-  void reserve(size_type n);   // reserve n nodes in the pool
-  size_type capacity() const;  // the capacity of the pool
+  void reserve(size_type n) { pool.reserve(n); }
 
-  bool empty(stack_type x) const;
+  size_type capacity() const { return pool.capacity(); }
+
+  bool empty(stack_type x) const { return x == end(); }
 
   stack_type end() const noexcept { return stack_type(0); }
 
-  T& value(stack_type x);
+  T& value(stack_type x) {
+    // what if x is empty??
+    if (!empty(x))
+      node(x).value;
+    else
+      std::cout << "Trying to access value of a empty node" << std::endl;
+    // Invoke dctor;
+    exit(66);
+  };
   const T& value(stack_type x) const;
 
   stack_type& next(stack_type x);
