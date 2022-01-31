@@ -2,6 +2,54 @@
 #include <iterator>
 #include <vector>
 
+
+
+
+template <typename T,typename N,typename S>
+class _iterator {
+  using stack_type = N; //const std::size_t
+  using value_type = T; //const int
+  using stack_pool = S; //const stack_pool<int,std::size_t>
+  stack_type current; //std::size_t
+  stack_pool& pool; //const stack_pool<int,std::size_t>&
+
+public:
+  // using value_type = value_type;
+  using reference = value_type&; //const int&
+  using pointer = value_type*; //const int*
+  // using difference_type = stack_type;
+  using iterator_category = std::forward_iterator_tag;
+
+  _iterator(stack_pool& pool, stack_type x)
+    : current{x}, pool{pool} {}  // take head as argument
+
+  reference operator*() const {
+    return pool.value(current);
+  }  // check for constantness
+
+  
+  _iterator& operator++() {  // pre-increment
+    current = pool.next(current);
+    return *this;
+  }
+
+  _iterator operator++(int) {  // post-increment
+    auto tmp = *this;
+    ++(*this);
+    return tmp;
+  }
+
+  friend bool operator==(const _iterator& x, const _iterator& y) {
+    return x.current == y.current;
+  }
+  friend bool operator!=(const _iterator& x, const _iterator& y) {
+    return !(x == y);
+  }
+};
+
+
+
+
 template <typename T, typename N = std::size_t>
 class stack_pool {
   struct node_t {
@@ -13,42 +61,6 @@ class stack_pool {
   using value_type = T;
   using size_type = typename std::vector<node_t>::size_type;
 
-  class _iterator {
-    stack_type current;
-    stack_pool& pool;
-
-   public:
-    // using value_type = value_type;
-    using reference = value_type&;
-    using pointer = value_type*;
-    // using difference_type = stack_type;
-    using iterator_category = std::forward_iterator_tag;
-
-    explicit _iterator(stack_pool& pool, stack_type x)
-        : current{x}, pool{pool} {}  // take head as argument
-
-    reference operator*() {
-      return pool.value(current);
-    }  // check for constantness
-
-    _iterator& operator++() {  // pre-increment
-      current = pool.next(current);
-      return *this;
-    }
-
-    _iterator operator++(int) {  // post-increment
-      auto tmp = *this;
-      ++(*this);
-      return tmp;
-    }
-
-    friend bool operator==(const _iterator& x, const _iterator& y) {
-      return x.current == y.current;
-    }
-    friend bool operator!=(const _iterator& x, const _iterator& y) {
-      return !(x == y);
-    }
-  };
 
   // Members
   std::vector<node_t> pool;
@@ -66,16 +78,14 @@ class stack_pool {
     //           << std::endl;
   };  // reserve n nodes in the pool
 
-  using iterator = _iterator;
-  //   using const_iterator = ...;
+  using iterator = _iterator< value_type, stack_type, stack_pool<value_type,stack_type>>;
+  using const_iterator = _iterator<const value_type, stack_type,const stack_pool< value_type, stack_type>>;
 
-  iterator begin(stack_type x) { return _iterator{*this, x}; }
-  iterator end(stack_type) {
-    return _iterator{*this, end()};
-  }  // this is not a typo
+  iterator begin(stack_type x) { return iterator{*this, x}; }
+  iterator end(stack_type) { return iterator{*this, end()}; }  // this is not a typo
 
-  // const_iterator begin(stack_type x) const;
-  // const_iterator end(stack_type) const;
+  const_iterator begin(stack_type x) const  { return const_iterator{*this, x}; }
+  const_iterator end(stack_type) const { return const_iterator{*this, end()};  }
 
   // const_iterator cbegin(stack_type x) const;
   // const_iterator cend(stack_type) const;
@@ -99,6 +109,7 @@ class stack_pool {
     // Invoke dctor;
     exit(66);
   };
+  
   const T& value(stack_type x) const {
     // what if x is empty??
     if (!empty(x))
@@ -110,7 +121,7 @@ class stack_pool {
   };
 
   stack_type& next(stack_type x) { return node(x).next; };
-  // const stack_type& next(stack_type x) const;
+  const stack_type& next(stack_type x) const{ return node(x).next; };
 
   stack_type push(const T& val, stack_type head) {
     if (empty(free_nodes)) {
@@ -148,3 +159,4 @@ class stack_pool {
 
   stack_type get_free_nodes() { return free_nodes; };  // only for debug
 };
+
