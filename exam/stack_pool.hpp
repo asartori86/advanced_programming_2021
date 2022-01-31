@@ -20,9 +20,9 @@ class _iterator {
   _iterator(stack_pool& pool, stack_type x)
       : current{x}, pool{pool} {}  // take head as argument
 
-  reference operator*() const {
+  reference operator*() const {  // check for constantness
     return pool.value(current);
-  }  // check for constantness
+  }
 
   _iterator& operator++() {  // pre-increment
     current = pool.next(current);
@@ -70,9 +70,6 @@ class stack_pool {
   stack_pool() : stack_pool{0} {};  // defaul ctor
   explicit stack_pool(size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
-    // std::cout << "size and capacity " << pool.size() << " " <<
-    // pool.capacity()
-    //           << std::endl;
   };  // reserve n nodes in the pool
 
   using iterator =
@@ -81,16 +78,14 @@ class stack_pool {
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
-  iterator begin(stack_type x) { return iterator{*this, x}; }
-  iterator end(stack_type) {
-    return iterator{*this, end()};
-  }  // this is not a typo
+  auto begin(stack_type x) { return iterator{*this, x}; }
+  auto end(stack_type) { return iterator{*this, end()}; }  // this is not a typo
 
-  const_iterator begin(stack_type x) const { return const_iterator{*this, x}; }
-  const_iterator end(stack_type) const { return const_iterator{*this, end()}; }
+  auto begin(stack_type x) const { return const_iterator{*this, x}; }
+  auto end(stack_type) const { return const_iterator{*this, end()}; }
 
-  // const_iterator cbegin(stack_type x) const;
-  // const_iterator cend(stack_type) const;
+  auto cbegin(stack_type x) const { return const_iterator{*this, x}; }
+  auto cend(stack_type) const { return const_iterator{*this, end()}; }
 
   stack_type new_stack() { return stack_type{0}; }  // return an empty stack
 
