@@ -49,7 +49,7 @@ class stack_pool {
   T& value(stack_type x) {
     // what if x is empty??
     if (!empty(x))
-      node(x).value;
+      return node(x).value;
     else
       std::cout << "Trying to access value of a empty node" << std::endl;
     // Invoke dctor;
