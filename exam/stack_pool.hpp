@@ -20,8 +20,12 @@ class stack_pool {
 
  public:
   stack_pool() : stack_pool{0} {};  // defaul ctor
-  explicit stack_pool(size_type n)
-      : pool{n}, free_nodes{new_stack()} {};  // reserve n nodes in the pool
+  explicit stack_pool(size_type n) : pool{}, free_nodes{new_stack()} {
+    reserve(n);
+    // std::cout << "size and capacity " << pool.size() << " " <<
+    // pool.capacity()
+    //           << std::endl;
+  };  // reserve n nodes in the pool
 
   //   using iterator = ...;
   //   using const_iterator = ...;
@@ -36,7 +40,9 @@ class stack_pool {
   // const_iterator cend(stack_type) const;
 
   stack_type new_stack()  // return an empty stack
-  { return stack_type{0}; }
+  {
+    return stack_type{0};
+  }
 
   void reserve(size_type n) { pool.reserve(n); }
 
@@ -55,13 +61,34 @@ class stack_pool {
     // Invoke dctor;
     exit(66);
   };
-  const T& value(stack_type x) const;
+  const T& value(stack_type x) const {
+    // what if x is empty??
+    if (!empty(x))
+      return node(x).value;
+    else
+      std::cout << "Trying to access value of a empty node" << std::endl;
+    // Invoke dctor;
+    exit(66);
+  };
 
   stack_type& next(stack_type x);
   const stack_type& next(stack_type x) const;
 
-  stack_type push(const T& val, stack_type head);
-  stack_type push(T&& val, stack_type head);
+  stack_type push(const T& val, stack_type head) {
+    if (empty(free_nodes)) {
+      pool.push_back(node_t{val, head});
+      // pool.emplace_back(val, head); // just for fun
+      return pool.size();
+    } else {
+      node_t& n = node(free_nodes);
+      n.next = head;
+      n.value = val;
+      stack_type new_head = free_nodes;
+      // free_nodes = pop(free_nodes);
+      return new_head;
+    }
+  };
+  // stack_type push(T&& val, stack_type head);
 
   stack_type pop(stack_type x);  // delete first node
 
