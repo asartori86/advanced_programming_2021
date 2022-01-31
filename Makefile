@@ -1,5 +1,5 @@
 # Simple Makefile to compile, clean and format all the sample codes
-# provided during the course of Advanced Programming
+# provided during the course of Advanced Programming 
 
 default: all
 
