@@ -17,7 +17,8 @@ class stack_pool {
   const node_t& node(stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
-  stack_pool() : pool{}, free_nodes{1} {};  // defaul ctor
+//   stack_pool() : pool{}, free_nodes{1} {};  // defaul ctor
+  stack_pool() : stack_pool{0} {};  // defaul ctor
   explicit stack_pool(size_type n) : pool{n}, free_nodes{1} {}; // reserve n nodes in the pool
 
   using iterator = ...;
