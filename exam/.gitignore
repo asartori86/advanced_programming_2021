@@ -1,2 +1,5 @@
 tests_main.o
 *.o
+.vscode/
+*.out
+*.x
