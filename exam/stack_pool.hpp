@@ -1,6 +1,6 @@
 #include <iostream>
-#include <vector>
 #include <iterator>
+#include <vector>
 
 template <typename T, typename N = std::size_t>
 class stack_pool {
@@ -8,8 +8,7 @@ class stack_pool {
     T value;
     N next;
   };
-  
-  
+
   using stack_type = N;
   using value_type = T;
   using size_type = typename std::vector<node_t>::size_type;
@@ -17,37 +16,38 @@ class stack_pool {
   class _iterator {
     stack_type current;
     stack_pool& pool;
-  public:
-    //using value_type = value_type;
+
+   public:
+    // using value_type = value_type;
     using reference = value_type&;
     using pointer = value_type*;
-    //using difference_type = stack_type;
+    // using difference_type = stack_type;
     using iterator_category = std::forward_iterator_tag;
 
-    explicit _iterator(stack_pool& pool,stack_type x): current{x},pool{pool} {} //take head as argument
+    explicit _iterator(stack_pool& pool, stack_type x)
+        : current{x}, pool{pool} {}  // take head as argument
 
-    reference operator*() {return pool.value(current);} // check for constantness
+    reference operator*() {
+      return pool.value(current);
+    }  // check for constantness
 
-    _iterator& operator++() { //pre-increment
+    _iterator& operator++() {  // pre-increment
       current = pool.next(current);
       return *this;
     }
 
-    _iterator operator++(int) { //post-increment
+    _iterator operator++(int) {  // post-increment
       auto tmp = *this;
       ++(*this);
       return tmp;
     }
 
-    friend bool operator==(const _iterator& x,const _iterator& y) {
+    friend bool operator==(const _iterator& x, const _iterator& y) {
       return x.current == y.current;
     }
-    friend bool operator!=(const _iterator& x,const _iterator& y) {
+    friend bool operator!=(const _iterator& x, const _iterator& y) {
       return !(x == y);
     }
-    
-    
-    
   };
 
   // Members
@@ -69,13 +69,10 @@ class stack_pool {
   using iterator = _iterator;
   //   using const_iterator = ...;
 
-  iterator begin(stack_type x) {
-    return _iterator{*this,x};
-  }
+  iterator begin(stack_type x) { return _iterator{*this, x}; }
   iterator end(stack_type) {
-    return _iterator{*this,end()};
+    return _iterator{*this, end()};
   }  // this is not a typo
-
 
   // const_iterator begin(stack_type x) const;
   // const_iterator end(stack_type) const;
@@ -112,8 +109,8 @@ class stack_pool {
     exit(66);
   };
 
-  stack_type& next(stack_type x) {return node(x).next;};
-  //const stack_type& next(stack_type x) const;
+  stack_type& next(stack_type x) { return node(x).next; };
+  // const stack_type& next(stack_type x) const;
 
   stack_type push(const T& val, stack_type head) {
     if (empty(free_nodes)) {
@@ -127,7 +124,7 @@ class stack_pool {
       n.value = val;
       stack_type new_head = free_nodes;
       free_nodes = new_free_nodes;
-      
+
       return new_head;
     }
   };
@@ -149,5 +146,5 @@ class stack_pool {
 
   stack_type free_stack(stack_type x);  // free entire stack
 
-  stack_type get_free_nodes(){return free_nodes;}; // only for debug
+  stack_type get_free_nodes() { return free_nodes; };  // only for debug
 };
