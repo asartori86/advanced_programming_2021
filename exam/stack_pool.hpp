@@ -50,7 +50,6 @@ class _iterator {
     current = x.current;
     return *this;
   }
-
   
   friend bool operator==(const _iterator& x, const _iterator& y) {
     return x.current == y.current;
@@ -172,11 +171,6 @@ class stack_pool {
       exit(66);
     }
     move_head(x,free_nodes);
-    // stack_type old_x = x;
-    // node_t& node_x = node(x);
-    // x = node_x.next;
-    // node_x.next = free_nodes;
-    // free_nodes = old_x;
     return x;
   };
 
@@ -186,13 +180,13 @@ class stack_pool {
       first++;
     return &first;
   }
-
+  
   stack_type free_stack(stack_type x) {
     auto tmp = get_last(x);
     next(tmp)=free_nodes;
     free_nodes=x;
     return end();
   }  // free entire stack
-
+  
   stack_type get_free_nodes() { return free_nodes; };  // only for debug
 };
