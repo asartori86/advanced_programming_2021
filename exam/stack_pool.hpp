@@ -10,7 +10,7 @@ class _iterator {
   using stack_pool = S;  // const stack_pool<int,std::size_t>
   stack_type current;    // std::size_t
   stack_pool& pool;      // const stack_pool<int,std::size_t>&
-
+                         // Chiedere al prof se pool va bene
  public:
   using value_type = T;           // const int
   using reference = value_type&;  // const int&
@@ -25,6 +25,7 @@ class _iterator {
 
   /* All the following functions assume only iterators originated
    from the same stack pool are compared */
+  // Chidere al prof
   _iterator& operator=(const _iterator& x) noexcept {
     current = x.current;
     return *this;
@@ -34,6 +35,7 @@ class _iterator {
     return pool.value(current);
   }
 
+  // Chiedere al prof
   stack_type operator&() const noexcept {  // check for constantness
     return current;
   }
@@ -95,6 +97,7 @@ class stack_pool {
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
+  // range for loop? Chiedere al prof.
   auto begin(const stack_type x) { return iterator{*this, x}; }
   auto end(stack_type) { return iterator{*this, end()}; }  // this is not a typo
 
@@ -122,7 +125,7 @@ class stack_pool {
     T & f() {
       return const_cast<T &>(std::as_const(*this).f());
     } */
-
+  // Chidere al prof code duplication const
   T& value(const stack_type x) {
     AP_ERROR(!empty(x)) << "Trying to get value from an invalid stack\n"
                         << std::endl;
@@ -130,7 +133,6 @@ class stack_pool {
   };
 
   const T& value(const stack_type x) const {
-    // what if x is empty??
     AP_ERROR(!empty(x)) << "Trying to get value from an invalid stack\n"
                         << std::endl;
     return node(x).value;
@@ -185,6 +187,7 @@ class stack_pool {
   stack_type free_stack(stack_type x) noexcept {
     if (empty(x))
       return x;
+
     auto tmp = get_last(x);
     next(tmp) = free_nodes;
     free_nodes = x;
