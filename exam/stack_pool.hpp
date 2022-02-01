@@ -1,3 +1,4 @@
+#include "ap_error.hpp"
 #include <iostream>
 #include <iterator>
 #include <utility>
@@ -20,6 +21,15 @@ class _iterator {
   _iterator(stack_pool& pool, stack_type x)
       : current{x}, pool{pool} {}  // take head as argument
 
+  _iterator(const _iterator& i) = default;
+
+  /* All the following functions assume only iterators originated
+   from the same stack pool are compared */
+  _iterator& operator=(const _iterator& x) noexcept {
+    current = x.current;
+    return *this;
+  }
+
   reference operator*() const {  // check for constantness
     return pool.value(current);
   }
@@ -37,16 +47,6 @@ class _iterator {
     auto tmp = *this;
     ++(*this);
     return tmp;
-  }
-
-  //_iterator(const _iterator& i): current{i.current},pool{i.pool} {}
-  _iterator(const _iterator& i) = default;
-
-  /* All the following functions assume only iterators originated
-     from the same stack pool are compared */
-  _iterator& operator=(const _iterator& x) noexcept {
-    current = x.current;
-    return *this;
   }
 
   friend bool operator==(const _iterator& x, const _iterator& y) noexcept {
@@ -76,9 +76,8 @@ class stack_pool {
   const node_t& node(const stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
-  stack_pool()
-      : stack_pool{
-            0} {};  // defaul ctor // Chiedere al prof Can I place noexcept?
+  stack_pool() : stack_pool{0} {};  // defaul ctor
+  // Chiedere al prof Can I place noexcept?
 
   explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
@@ -117,12 +116,12 @@ class stack_pool {
 
   stack_type end() const noexcept { return stack_type(0); }
 
-  // T const & f() const {
-  //   return something_complicated();
-  // }
-  // T & f() {
-  //   return const_cast<T &>(std::as_const(*this).f());
-  // }
+  /*   T const & f() const {
+      return something_complicated();
+    }
+    T & f() {
+      return const_cast<T &>(std::as_const(*this).f());
+    } */
 
   T& value(const stack_type x) {
     // what if x is empty??
@@ -149,6 +148,7 @@ class stack_pool {
     return node(x).next;
   };
 
+ private:
   void move_head(stack_type& to, stack_type& from) noexcept {
     std::swap<stack_type>(next(to), from);
     std::swap<stack_type>(to, from);
@@ -168,6 +168,7 @@ class stack_pool {
     }
   }
 
+ public:
   stack_type push(const T& val, stack_type head) { return _push(val, head); };
 
   stack_type push(T&& val, stack_type head) {
@@ -199,5 +200,7 @@ class stack_pool {
     return end();
   }  // free entire stack
 
-  stack_type get_free_nodes() { return free_nodes; };  // only for debug
+  stack_type get_free_nodes() const noexcept {  // only for debug purposes
+    return free_nodes;
+  };
 };
