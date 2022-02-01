@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iterator>
-#include <vector>
 #include <utility>
+#include <vector>
 
 template <typename T, typename N, typename S>
 class _iterator {
@@ -11,11 +11,10 @@ class _iterator {
   stack_pool& pool;      // const stack_pool<int,std::size_t>&
 
  public:
-
-  using value_type = T;  // const int
+  using value_type = T;           // const int
   using reference = value_type&;  // const int&
   using pointer = value_type*;    // const int*
-  // using difference_type = stack_type; // chiedere al prof! 
+  // using difference_type = stack_type; // chiedere al prof!
   using iterator_category = std::forward_iterator_tag;
 
   _iterator(stack_pool& pool, stack_type x)
@@ -24,37 +23,36 @@ class _iterator {
   reference operator*() const {  // check for constantness
     return pool.value(current);
   }
-  
-  stack_type operator&() const {  // check for constantness
+
+  stack_type operator&() const noexcept {  // check for constantness
     return current;
   }
 
-  _iterator& operator++() {  // pre-increment
+  _iterator& operator++() noexcept {  // pre-increment
     current = pool.next(current);
     return *this;
   }
 
-  _iterator operator++(int) {  // post-increment
+  _iterator operator++(int) noexcept {  // post-increment
     auto tmp = *this;
     ++(*this);
-    
     return tmp;
   }
-  
+
   //_iterator(const _iterator& i): current{i.current},pool{i.pool} {}
-  _iterator(const _iterator& i)= default;
-  
+  _iterator(const _iterator& i) = default;
+
   /* All the following functions assume only iterators originated
      from the same stack pool are compared */
-  _iterator& operator=(const _iterator& x) {
+  _iterator& operator=(const _iterator& x) noexcept {
     current = x.current;
     return *this;
   }
-  
-  friend bool operator==(const _iterator& x, const _iterator& y) {
+
+  friend bool operator==(const _iterator& x, const _iterator& y) noexcept {
     return x.current == y.current;
   }
-  friend bool operator!=(const _iterator& x, const _iterator& y) {
+  friend bool operator!=(const _iterator& x, const _iterator& y) noexcept {
     return !(x == y);
   }
 };
@@ -78,7 +76,10 @@ class stack_pool {
   const node_t& node(const stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
-  stack_pool() : stack_pool{0} {};  // defaul ctor
+  stack_pool()
+      : stack_pool{
+            0} {};  // defaul ctor // Chiedere al prof Can I place noexcept?
+
   explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
   };  // reserve n nodes in the pool
@@ -104,16 +105,17 @@ class stack_pool {
   auto cbegin(const stack_type x) const { return const_iterator{*this, x}; }
   auto cend(stack_type) const { return const_iterator{*this, end()}; }
 
-  stack_type new_stack() const { return end(); }  // return an empty stack
+  stack_type new_stack() const noexcept {
+    return end();
+  }  // return an empty stack
 
   void reserve(const size_type n) { pool.reserve(n); }
 
-  size_type capacity() const { return pool.capacity(); }
+  size_type capacity() const noexcept { return pool.capacity(); }
 
-  bool empty(const stack_type x) const { return x == end(); }
+  bool empty(const stack_type x) const noexcept { return x == end(); }
 
   stack_type end() const noexcept { return stack_type(0); }
-
 
   // T const & f() const {
   //   return something_complicated();
@@ -121,8 +123,8 @@ class stack_pool {
   // T & f() {
   //   return const_cast<T &>(std::as_const(*this).f());
   // }
-  
-  T& value(const stack_type x) { 
+
+  T& value(const stack_type x) {
     // what if x is empty??
     if (!empty(x))
       return node(x).value;
@@ -142,59 +144,58 @@ class stack_pool {
     exit(66);
   };
 
-  stack_type& next(const stack_type x) { return node(x).next; };
-  const stack_type& next(const stack_type x) const { return node(x).next; };
-  
-  void move_head(stack_type& to,stack_type& from){
-    std::swap<stack_type>(next(to),from);
-    std::swap<stack_type>(to,from);
+  stack_type& next(const stack_type x) noexcept { return node(x).next; };
+  const stack_type& next(const stack_type x) const noexcept {
+    return node(x).next;
+  };
+
+  void move_head(stack_type& to, stack_type& from) noexcept {
+    std::swap<stack_type>(next(to), from);
+    std::swap<stack_type>(to, from);
     return;
   }
-  
-  template<typename X>
-  stack_type _push(X&& val,stack_type head) {
+
+  template <typename X>
+  stack_type _push(X&& val, stack_type head) {
     if (empty(free_nodes)) {
       pool.push_back(node_t{std::forward<X>(val), head});
       // pool.emplace_back(val, head); // just for fun
       return pool.size();
     } else {
-      value(free_nodes)=std::forward<X>(val);
-      move_head(free_nodes,head);
+      value(free_nodes) = std::forward<X>(val);
+      move_head(free_nodes, head);
       return head;
     }
   }
-  
-  stack_type push(const T& val, stack_type head) {
-    return _push(val,head);
-  };
+
+  stack_type push(const T& val, stack_type head) { return _push(val, head); };
 
   stack_type push(T&& val, stack_type head) {
-    return _push(std::move(val),head);
+    return _push(std::move(val), head);
   }
-
 
   stack_type pop(stack_type x) {  // delete first node
     if (empty(x)) {
       std::cout << "Trying to pop from an empty stack" << std::endl;
       exit(66);
     }
-    move_head(x,free_nodes);
+    move_head(x, free_nodes);
     return x;
   };
 
-  stack_type get_last(const stack_type x) {
-    auto first=begin(x);
-    while(next(&first)!=end())      //  while(!next(first++)){}
+  stack_type get_last(const stack_type x) const noexcept {
+    auto first = begin(x);
+    while (next(&first) != end())  //  while(!next(first++)){}
       first++;
     return &first;
   }
-  
-  stack_type free_stack(stack_type x) {
+
+  stack_type free_stack(stack_type x) noexcept {
     auto tmp = get_last(x);
-    next(tmp)=free_nodes;
-    free_nodes=x;
+    next(tmp) = free_nodes;
+    free_nodes = x;
     return end();
   }  // free entire stack
-  
+
   stack_type get_free_nodes() { return free_nodes; };  // only for debug
 };
