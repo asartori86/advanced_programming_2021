@@ -79,7 +79,7 @@ class stack_pool {
 
  public:
   stack_pool() : stack_pool{0} {};  // defaul ctor
-  explicit stack_pool(size_type n) : pool{}, free_nodes{new_stack()} {
+  explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
   };  // reserve n nodes in the pool
 
@@ -95,22 +95,22 @@ class stack_pool {
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
-  auto begin(stack_type x) { return iterator{*this, x}; }
+  auto begin(const stack_type x) { return iterator{*this, x}; }
   auto end(stack_type) { return iterator{*this, end()}; }  // this is not a typo
 
-  auto begin(stack_type x) const { return const_iterator{*this, x}; }
+  auto begin(const stack_type x) const { return const_iterator{*this, x}; }
   auto end(stack_type) const { return const_iterator{*this, end()}; }
 
-  auto cbegin(stack_type x) const { return const_iterator{*this, x}; }
+  auto cbegin(const stack_type x) const { return const_iterator{*this, x}; }
   auto cend(stack_type) const { return const_iterator{*this, end()}; }
 
   stack_type new_stack() const { return end(); }  // return an empty stack
 
-  void reserve(size_type n) { pool.reserve(n); }
+  void reserve(const size_type n) { pool.reserve(n); }
 
   size_type capacity() const { return pool.capacity(); }
 
-  bool empty(stack_type x) const { return x == end(); }
+  bool empty(const stack_type x) const { return x == end(); }
 
   stack_type end() const noexcept { return stack_type(0); }
 
@@ -122,7 +122,7 @@ class stack_pool {
   //   return const_cast<T &>(std::as_const(*this).f());
   // }
   
-  T& value(stack_type x) { 
+  T& value(const stack_type x) { 
     // what if x is empty??
     if (!empty(x))
       return node(x).value;
@@ -132,7 +132,7 @@ class stack_pool {
     exit(66);
   };
 
-  const T& value(stack_type x) const {
+  const T& value(const stack_type x) const {
     // what if x is empty??
     if (!empty(x))
       return node(x).value;
@@ -142,8 +142,8 @@ class stack_pool {
     exit(66);
   };
 
-  stack_type& next(stack_type x) { return node(x).next; };
-  const stack_type& next(stack_type x) const { return node(x).next; };
+  stack_type& next(const stack_type x) { return node(x).next; };
+  const stack_type& next(const stack_type x) const { return node(x).next; };
   
   void move_head(stack_type& to,stack_type& from){
     std::swap<stack_type>(next(to),from);
@@ -182,7 +182,7 @@ class stack_pool {
     return x;
   };
 
-  stack_type get_last(stack_type x) {
+  stack_type get_last(const stack_type x) {
     auto first=begin(x);
     while(next(&first)!=end())      //  while(!next(first++)){}
       first++;
