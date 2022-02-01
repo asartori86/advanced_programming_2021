@@ -91,7 +91,7 @@ class stack_pool {
 
   using iterator =
       _iterator<value_type, stack_type, stack_pool<value_type, stack_type>>;
-  using const_iterator = _iterator<const value_type,
+  using const_iterator = _iterator<const value_type,const
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
@@ -104,7 +104,7 @@ class stack_pool {
   auto cbegin(stack_type x) const { return const_iterator{*this, x}; }
   auto cend(stack_type) const { return const_iterator{*this, end()}; }
 
-  stack_type new_stack() { return stack_type{0}; }  // return an empty stack
+  stack_type new_stack() const { return end(); }  // return an empty stack
 
   void reserve(size_type n) { pool.reserve(n); }
 
@@ -113,6 +113,14 @@ class stack_pool {
   bool empty(stack_type x) const { return x == end(); }
 
   stack_type end() const noexcept { return stack_type(0); }
+
+
+  // T const & f() const {
+  //   return something_complicated();
+  // }
+  // T & f() {
+  //   return const_cast<T &>(std::as_const(*this).f());
+  // }
 
   T& value(stack_type x) {
     // what if x is empty??
