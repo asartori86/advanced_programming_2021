@@ -74,8 +74,8 @@ class stack_pool {
   std::vector<node_t> pool;
   stack_type free_nodes;  // at the beginning, it is empty
 
-  node_t& node(stack_type x) noexcept { return pool[x - 1]; }
-  const node_t& node(stack_type x) const noexcept { return pool[x - 1]; }
+  node_t& node(const stack_type x) noexcept { return pool[x - 1]; }
+  const node_t& node(const stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
   stack_pool() : stack_pool{0} {};  // defaul ctor
