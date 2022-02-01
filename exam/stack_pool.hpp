@@ -180,7 +180,7 @@ class stack_pool {
   stack_type get_last(const stack_type x) const noexcept {
     auto first = begin(x);
     while (next(&first) != end())  //  while(!next(first++)){}
-      first++;
+      ++first;
     return &first;
   }
 
