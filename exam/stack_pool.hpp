@@ -6,16 +6,16 @@
 template <typename T, typename N, typename S>
 class _iterator {
   using stack_type = N;  // const std::size_t
-  using value_type = T;  // const int
   using stack_pool = S;  // const stack_pool<int,std::size_t>
   stack_type current;    // std::size_t
   stack_pool& pool;      // const stack_pool<int,std::size_t>&
 
  public:
-  // using value_type = value_type;
+
+  using value_type = T;  // const int
   using reference = value_type&;  // const int&
   using pointer = value_type*;    // const int*
-  // using difference_type = stack_type;
+  // using difference_type = stack_type; // chiedere al prof! 
   using iterator_category = std::forward_iterator_tag;
 
   _iterator(stack_pool& pool, stack_type x)
@@ -37,19 +37,20 @@ class _iterator {
   _iterator operator++(int) {  // post-increment
     auto tmp = *this;
     ++(*this);
+    
     return tmp;
   }
-
+  
+  //_iterator(const _iterator& i): current{i.current},pool{i.pool} {}
+  _iterator(const _iterator& i)= default;
+  
   /* All the following functions assume only iterators originated
-  from the same stack pool are compared */
+     from the same stack pool are compared */
   _iterator& operator=(const _iterator& x) {
     current = x.current;
     return *this;
   }
 
-  stack_type get_current() const {
-    return current;
-  }
   
   friend bool operator==(const _iterator& x, const _iterator& y) {
     return x.current == y.current;
@@ -182,7 +183,7 @@ class stack_pool {
   stack_type get_last(stack_type x) {
     auto first=begin(x);
     while(next(&first)!=end())      //  while(!next(first++)){}
-      ++first;
+      first++;
     return &first;
   }
 
