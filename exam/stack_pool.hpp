@@ -91,7 +91,7 @@ class stack_pool {
 
   using iterator =
       _iterator<value_type, stack_type, stack_pool<value_type, stack_type>>;
-  using const_iterator = _iterator<const value_type,const
+  using const_iterator = _iterator<const value_type,
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
@@ -121,8 +121,8 @@ class stack_pool {
   // T & f() {
   //   return const_cast<T &>(std::as_const(*this).f());
   // }
-
-  T& value(stack_type x) {
+  
+  T& value(stack_type x) { 
     // what if x is empty??
     if (!empty(x))
       return node(x).value;
