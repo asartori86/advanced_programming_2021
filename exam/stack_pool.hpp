@@ -191,6 +191,8 @@ class stack_pool {
   }
 
   stack_type free_stack(stack_type x) noexcept {
+    if (empty(x))
+      return x;
     auto tmp = get_last(x);
     next(tmp) = free_nodes;
     free_nodes = x;
