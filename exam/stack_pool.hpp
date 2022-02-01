@@ -24,6 +24,10 @@ class _iterator {
   reference operator*() const {  // check for constantness
     return pool.value(current);
   }
+  
+  stack_type operator&() const {  // check for constantness
+    return current;
+  }
 
   _iterator& operator++() {  // pre-increment
     current = pool.next(current);
@@ -43,6 +47,10 @@ class _iterator {
     return *this;
   }
 
+  stack_type get_current() const {
+    return current;
+  }
+  
   friend bool operator==(const _iterator& x, const _iterator& y) {
     return x.current == y.current;
   }
@@ -135,18 +143,27 @@ class stack_pool {
     return;
   }
   
-  stack_type push(const T& val, stack_type head) {
+  template<typename X>
+  stack_type _push(X&& val,stack_type head) {
     if (empty(free_nodes)) {
-      pool.push_back(node_t{val, head});
+      pool.push_back(node_t{std::forward<X>(val), head});
       // pool.emplace_back(val, head); // just for fun
       return pool.size();
     } else {
-      value(free_nodes)=val;
+      value(free_nodes)=std::forward<X>(val);
       move_head(free_nodes,head);
       return head;
     }
+  }
+  
+  stack_type push(const T& val, stack_type head) {
+    return _push(val,head);
   };
-  // stack_type push(T&& val, stack_type head);
+
+  stack_type push(T&& val, stack_type head) {
+    return _push(std::move(val),head);
+  }
+
 
   stack_type pop(stack_type x) {  // delete first node
     if (empty(x)) {
@@ -162,10 +179,18 @@ class stack_pool {
     return x;
   };
 
+  stack_type get_last(stack_type x) {
+    auto first=begin(x);
+    while(next(&first)!=end())      //  while(!next(first++)){}
+      ++first;
+    return &first;
+  }
+
   stack_type free_stack(stack_type x) {
-    while (!empty(x))
-      x = pop(x);
-    return x;
+    auto tmp = get_last(x);
+    next(tmp)=free_nodes;
+    free_nodes=x;
+    return end();
   }  // free entire stack
 
   stack_type get_free_nodes() { return free_nodes; };  // only for debug
