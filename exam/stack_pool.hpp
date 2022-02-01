@@ -124,23 +124,16 @@ class stack_pool {
     } */
 
   T& value(const stack_type x) {
-    // what if x is empty??
-    if (!empty(x))
-      return node(x).value;
-    else
-      std::cout << "Trying to access value of a empty node" << std::endl;
-    // Invoke dctor;
-    exit(66);
+    AP_ERROR(!empty(x)) << "Trying to get value from an invalid stack\n"
+                        << std::endl;
+    return node(x).value;
   };
 
   const T& value(const stack_type x) const {
     // what if x is empty??
-    if (!empty(x))
-      return node(x).value;
-    else
-      std::cout << "Trying to access value of a empty node" << std::endl;
-    // Invoke dctor;
-    exit(66);
+    AP_ERROR(!empty(x)) << "Trying to get value from an invalid stack\n"
+                        << std::endl;
+    return node(x).value;
   };
 
   stack_type& next(const stack_type x) noexcept { return node(x).next; };
@@ -176,10 +169,8 @@ class stack_pool {
   }
 
   stack_type pop(stack_type x) {  // delete first node
-    if (empty(x)) {
-      std::cout << "Trying to pop from an empty stack" << std::endl;
-      exit(66);
-    }
+    AP_ERROR(!empty(x)) << "Trying to pop from an empty stack error \n"
+                        << std::endl;
     move_head(x, free_nodes);
     return x;
   };
