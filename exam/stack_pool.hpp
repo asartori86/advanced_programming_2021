@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <utility>
 
 template <typename T, typename N, typename S>
 class _iterator {
@@ -127,21 +128,22 @@ class stack_pool {
 
   stack_type& next(stack_type x) { return node(x).next; };
   const stack_type& next(stack_type x) const { return node(x).next; };
-
+  
+  void move_head(stack_type& to,stack_type& from){
+    std::swap<stack_type>(next(to),from);
+    std::swap<stack_type>(to,from);
+    return;
+  }
+  
   stack_type push(const T& val, stack_type head) {
     if (empty(free_nodes)) {
       pool.push_back(node_t{val, head});
       // pool.emplace_back(val, head); // just for fun
       return pool.size();
     } else {
-      node_t& n = node(free_nodes);
-      stack_type new_free_nodes = n.next;
-      n.next = head;
-      n.value = val;
-      stack_type new_head = free_nodes;
-      free_nodes = new_free_nodes;
-
-      return new_head;
+      value(free_nodes)=val;
+      move_head(free_nodes,head);
+      return head;
     }
   };
   // stack_type push(T&& val, stack_type head);
@@ -151,12 +153,12 @@ class stack_pool {
       std::cout << "Trying to pop from an empty stack" << std::endl;
       exit(66);
     }
-
-    stack_type old_x = x;
-    node_t& node_x = node(x);
-    x = node_x.next;
-    node_x.next = free_nodes;
-    free_nodes = old_x;
+    move_head(x,free_nodes);
+    // stack_type old_x = x;
+    // node_t& node_x = node(x);
+    // x = node_x.next;
+    // node_x.next = free_nodes;
+    // free_nodes = old_x;
     return x;
   };
 
