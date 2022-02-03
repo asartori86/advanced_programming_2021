@@ -3,3 +3,4 @@ tests_main.o
 .vscode/
 *.out
 *.x
+stack_pool
