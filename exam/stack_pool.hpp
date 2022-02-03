@@ -9,7 +9,7 @@ class _iterator {
   using stack_type = N;  // const std::size_t
   using stack_pool = S;  // const stack_pool<int,std::size_t>
   stack_type current;    // std::size_t
-  stack_pool& pool;      // const stack_pool<int,std::size_t>&
+  stack_pool* pool;      // const stack_pool<int,std::size_t>& //evitare referenza qui ! meglio stack_pool*
                          // Chiedere al prof se pool va bene
  public:
   using value_type = T;           // const int
@@ -19,7 +19,7 @@ class _iterator {
   using iterator_category = std::forward_iterator_tag;
 
   _iterator(stack_pool& pool, stack_type x)
-      : current{x}, pool{pool} {}  // take head as argument
+      : current{x}, pool{&pool} {}  // take head as argument
 
   _iterator(const _iterator& i) = default;
 
@@ -78,10 +78,10 @@ class stack_pool {
   const node_t& node(const stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
-  stack_pool() : stack_pool{0} {};  // defaul ctor
+  stack_pool() noexcept : stack_pool{0} {};  // defaul ctor
   // Chiedere al prof Can I place noexcept?
 
-  explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
+  explicit stack_pool(const size_type n=0) : pool{}, free_nodes{new_stack()} {
     reserve(n);
   };  // reserve n nodes in the pool
 
@@ -179,7 +179,7 @@ class stack_pool {
 
   stack_type get_last(const stack_type x) const noexcept {
     auto first = begin(x);
-    while (next(&first) != end())  //  while(!next(first++)){}
+    while (next(&first) != end())  //  while(!next(first++)){},
       ++first;
     return &first;
   }
