@@ -27,9 +27,6 @@ class _iterator {
    from the same stack pool are compared */
   // Chidere al prof
   _iterator& operator=(const _iterator& x) noexcept {
-    /** 
-
-     */
     current = x.current;
     return *this;
   }
@@ -64,10 +61,11 @@ class _iterator {
 
 template <typename T, typename N = std::size_t>
 class stack_pool {
+
   struct node_t {
     T value;
     N next;
-
+    
     explicit node_t(T value, N next) noexcept : value{value}, next{next} {}
   };
 
@@ -145,38 +143,68 @@ class stack_pool {
   }
 
   stack_type new_stack() const noexcept {
+    /** 
+	Create new empty stack.
+    */
     return end();
   }  // return an empty stack
 
-  void reserve(const size_type n) { pool.reserve(n); }
+  void reserve(const size_type n) {
+    /**
+       Request that stack pool capacity be at least enough to contain n elements. 
+     */
+    pool.reserve(n);
+  }
+  
+  size_type capacity() const noexcept {
+    /**
+       Return size of the storage space currently allocated for the stack pool, expressed in terms of nodes.
+     */
+    return pool.capacity();
+  }
 
-  size_type capacity() const noexcept { return pool.capacity(); }
+  bool empty(const stack_type x) const noexcept {
+    /**
+       Returns whether the stack is empty.
+     */
+    return x == end(); 
+  }
 
-  bool empty(const stack_type x) const noexcept { return x == end(); }
+  stack_type end() const noexcept {
+    /**
+       Returns top of empty stack.
+     */
+    return stack_type(0);
+  }
 
-  stack_type end() const noexcept { return stack_type(0); }
-
-  /*   T const & f() const {
-      return something_complicated();
-    }
-    T & f() {
-      return const_cast<T &>(std::as_const(*this).f());
-    } */
-  // Chidere al prof code duplication const
   T& value(const stack_type x) {
+    /**
+       Returns a reference to the value contained in the of the stack.
+    */
     AP_ERROR(!empty(x)) << "Trying to get value from an invalid stack\n"
                         << std::endl;
     return node(x).value;
-  };
+  }
 
   const T& value(const stack_type x) const {
+    /**
+       Returns a const reference to the value contained in the of the stack.
+    */
     AP_ERROR(!empty(x)) << "Trying to get value from an invalid stack\n"
                         << std::endl;
     return node(x).value;
-  };
+  }
 
-  stack_type& next(const stack_type x) noexcept { return node(x).next; };
+  stack_type& next(const stack_type x) noexcept {
+    /**
+       Return a reference to the index of the next element on the stack.
+     */
+    return node(x).next;
+  };
   const stack_type& next(const stack_type x) const noexcept {
+    /**
+       Return a const reference to the index of the next element on the stack.
+     */
     return node(x).next;
   };
 
@@ -199,20 +227,6 @@ class stack_pool {
     }
   }
 
- public:
-  stack_type push(const T& val, stack_type head) { return _push(val, head); };
-
-  stack_type push(T&& val, stack_type head) {
-    return _push(std::move(val), head);
-  }
-
-  stack_type pop(stack_type x) {  // delete first node
-    AP_ERROR(!empty(x)) << "Trying to pop from an empty stack error \n"
-                        << std::endl;
-    move_head(x, free_nodes);
-    return x;
-  };
-
   stack_type get_last(const stack_type x) const noexcept {
     auto first = begin(x);
     while (next(&first) != end())  //  while(!next(first++)){},
@@ -220,7 +234,35 @@ class stack_pool {
     return &first;
   }
 
+ public:
+  stack_type push(const T& val, stack_type head) {
+    /**
+       Insert element on the top of the stack.
+    */
+    return _push(val, head); 
+  }
+
+  stack_type push(T&& val, stack_type head) {
+    /**
+       Insert element on the top of the stack using R-value ref.
+    */    
+    return _push(std::move(val), head);
+  }
+
+  stack_type pop(stack_type x) {  // delete first node
+    /**
+       Remove the element on the top of the stack
+     */
+    AP_ERROR(!empty(x)) << "Trying to pop from an empty stack error \n"
+                        << std::endl;
+    move_head(x, free_nodes);
+    return x;
+  };
+
   stack_type free_stack(stack_type x) noexcept {
+    /**
+       Free entire stack.
+     */
     if (empty(x))
       return x;
 
@@ -230,7 +272,5 @@ class stack_pool {
     return end();
   }  // free entire stack
 
-  stack_type get_free_nodes() const noexcept {  // only for debug purposes
-    return free_nodes;
-  };
+
 };
