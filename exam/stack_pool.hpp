@@ -66,6 +66,8 @@ class stack_pool {
   struct node_t {
     T value;
     N next;
+
+    explicit node_t(T value, N next) noexcept : value{value}, next{next} {}
   };
 
   using stack_type = N;
@@ -155,8 +157,7 @@ class stack_pool {
   template <typename X>
   stack_type _push(X&& val, stack_type head) {
     if (empty(free_nodes)) {
-      pool.push_back(node_t{std::forward<X>(val), head});
-      // pool.emplace_back(val, head); // just for fun
+      pool.emplace_back(val, head);  // just for fun
       return pool.size();
     } else {
       value(free_nodes) = std::forward<X>(val);
