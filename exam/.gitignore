@@ -4,3 +4,5 @@ tests_main.o
 *.out
 *.x
 stack_pool
+html/
+latex/
