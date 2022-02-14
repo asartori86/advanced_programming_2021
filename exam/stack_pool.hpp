@@ -27,12 +27,14 @@ class _iterator {
    from the same stack pool are compared */
   // Chidere al prof
   _iterator& operator=(const _iterator& x) noexcept {
+    /** doxy test 
+     */
     current = x.current;
     return *this;
   }
 
   reference operator*() const {  // check for constantness
-    return pool.value(current);
+    return pool->value(current);
   }
 
   // Chiedere al prof
@@ -41,7 +43,7 @@ class _iterator {
   }
 
   _iterator& operator++() noexcept {  // pre-increment
-    current = pool.next(current);
+    current = pool->next(current);
     return *this;
   }
 
@@ -81,7 +83,7 @@ class stack_pool {
   stack_pool() noexcept : stack_pool{0} {};  // defaul ctor
   // Chiedere al prof Can I place noexcept?
 
-  explicit stack_pool(const size_type n=0) : pool{}, free_nodes{new_stack()} {
+  explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
   };  // reserve n nodes in the pool
 
