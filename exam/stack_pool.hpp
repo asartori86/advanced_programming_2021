@@ -27,7 +27,8 @@ class _iterator {
    from the same stack pool are compared */
   // Chidere al prof
   _iterator& operator=(const _iterator& x) noexcept {
-    /** doxy test 
+    /** 
+
      */
     current = x.current;
     return *this;
@@ -101,15 +102,47 @@ class stack_pool {
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
-  // range for loop? Chiedere al prof.
-  auto begin(const stack_type x) { return iterator{*this, x}; }
-  auto end(stack_type) { return iterator{*this, end()}; }  // this is not a typo
+  auto begin(const stack_type x) {
+    /**
+       Returns an iterator pointing to the top element in the stack.
+   */
+    return iterator{*this, x};
+  }
+  auto end(stack_type) {
+    /**
+       Returns an iterator pointing the top of an empty stack.
+    */
+    return iterator{*this, end()};
+  }  // this is not a typo
 
-  auto begin(const stack_type x) const { return const_iterator{*this, x}; }
-  auto end(stack_type) const { return const_iterator{*this, end()}; }
+  auto begin(const stack_type x) const {
+    /**
+       Returns a const iterator pointing to the top element in the stack.
+   */
 
-  auto cbegin(const stack_type x) const { return const_iterator{*this, x}; }
-  auto cend(stack_type) const { return const_iterator{*this, end()}; }
+    return const_iterator{*this, x};
+  }
+  auto end(stack_type) const {
+    /**
+       Returns a const iterator pointing the top of an empty stack.
+    */
+    return const_iterator{*this, end()};
+  }
+
+  auto cbegin(const stack_type x) const {
+    /**
+       Returns a const iterator pointing to the top element in the stack.
+    */
+    
+    return const_iterator{*this, x}; 
+  }
+  
+  auto cend(stack_type) const {
+    /**
+       Returns a const iterator pointing the top of an empty stack.
+    */
+    return const_iterator{*this, end()};
+  }
 
   stack_type new_stack() const noexcept {
     return end();
