@@ -6,46 +6,37 @@
 
 template <typename T, typename N, typename S>
 class _iterator {
-  using stack_type = N;  // const std::size_t
-  using stack_pool = S;  // const stack_pool<int,std::size_t>
-  stack_type current;    // std::size_t
-  stack_pool* pool;      // const stack_pool<int,std::size_t>& //evitare referenza qui ! meglio stack_pool*
-                         // Chiedere al prof se pool va bene
+  using stack_type = N;
+  using stack_pool = S;
+  stack_type current;
+  stack_pool* pool;
+
  public:
   using value_type = T;           // const int
   using reference = value_type&;  // const int&
   using pointer = value_type*;    // const int*
-  // using difference_type = stack_type; // chiedere al prof!
+  using difference_type = stack_type;
   using iterator_category = std::forward_iterator_tag;
 
-  _iterator(stack_pool& pool, stack_type x)
-      : current{x}, pool{&pool} {}  // take head as argument
+  _iterator(stack_pool& pool, stack_type head) : current{head}, pool{&pool} {}
 
   _iterator(const _iterator& i) = default;
 
-  /* All the following functions assume only iterators originated
-   from the same stack pool are compared */
-  // Chidere al prof
   _iterator& operator=(const _iterator& x) noexcept {
     current = x.current;
     return *this;
   }
 
-  reference operator*() const {  // check for constantness
-    return pool->value(current);
-  }
+  reference operator*() const { return pool->value(current); }
 
-  // Chiedere al prof
-  stack_type operator&() const noexcept {  // check for constantness
-    return current;
-  }
+  stack_type operator&() const noexcept { return current; }
 
-  _iterator& operator++() noexcept {  // pre-increment
+  _iterator& operator++() noexcept {
     current = pool->next(current);
     return *this;
   }
 
-  _iterator operator++(int) noexcept {  // post-increment
+  _iterator operator++(int) noexcept {
     auto tmp = *this;
     ++(*this);
     return tmp;
@@ -61,11 +52,10 @@ class _iterator {
 
 template <typename T, typename N = std::size_t>
 class stack_pool {
-
   struct node_t {
     T value;
     N next;
-    
+
     explicit node_t(T value, N next) noexcept : value{value}, next{next} {}
   };
 
@@ -82,7 +72,6 @@ class stack_pool {
 
  public:
   stack_pool() noexcept : stack_pool{0} {};  // defaul ctor
-  // Chiedere al prof Can I place noexcept?
 
   explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
@@ -131,10 +120,10 @@ class stack_pool {
     /**
        Returns a const iterator pointing to the top element in the stack.
     */
-    
-    return const_iterator{*this, x}; 
+
+    return const_iterator{*this, x};
   }
-  
+
   auto cend(stack_type) const {
     /**
        Returns a const iterator pointing the top of an empty stack.
@@ -143,22 +132,24 @@ class stack_pool {
   }
 
   stack_type new_stack() const noexcept {
-    /** 
-	Create new empty stack.
+    /**
+    Create new empty stack.
     */
     return end();
   }  // return an empty stack
 
   void reserve(const size_type n) {
     /**
-       Request that stack pool capacity be at least enough to contain n elements. 
+       Request that stack pool capacity be at least enough to contain n
+       elements.
      */
     pool.reserve(n);
   }
-  
+
   size_type capacity() const noexcept {
     /**
-       Return size of the storage space currently allocated for the stack pool, expressed in terms of nodes.
+       Return size of the storage space currently allocated for the stack pool,
+       expressed in terms of nodes.
      */
     return pool.capacity();
   }
@@ -167,7 +158,7 @@ class stack_pool {
     /**
        Returns whether the stack is empty.
      */
-    return x == end(); 
+    return x == end();
   }
 
   stack_type end() const noexcept {
@@ -239,13 +230,13 @@ class stack_pool {
     /**
        Insert element on the top of the stack.
     */
-    return _push(val, head); 
+    return _push(val, head);
   }
 
   stack_type push(T&& val, stack_type head) {
     /**
        Insert element on the top of the stack using R-value ref.
-    */    
+    */
     return _push(std::move(val), head);
   }
 
@@ -271,6 +262,4 @@ class stack_pool {
     free_nodes = x;
     return end();
   }  // free entire stack
-
-
 };
