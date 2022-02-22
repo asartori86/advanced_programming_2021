@@ -18,7 +18,8 @@ class _iterator {
   using difference_type = std::ptrdiff_t;
   using iterator_category = std::forward_iterator_tag;
 
-  _iterator(stack_pool& pool, stack_type head) : current{head}, pool{&pool} {}
+  _iterator(stack_pool& pool, stack_type head) noexcept
+      : current{head}, pool{&pool} {}
 
   _iterator(const _iterator& i) = default;
 
@@ -52,15 +53,14 @@ class _iterator {
 
 template <typename T, typename N = std::size_t>
 class stack_pool {
-  struct node_t {
-    T value;
-    N next;
-
-    explicit node_t(T value, N next) noexcept : value{value}, next{next} {}
-  };
-
   using stack_type = N;
   using value_type = T;
+
+  struct node_t {
+    value_type value;
+    stack_type next;
+  };
+
   using size_type = typename std::vector<node_t>::size_type;
 
   // Members
@@ -71,11 +71,11 @@ class stack_pool {
   const node_t& node(const stack_type x) const noexcept { return pool[x - 1]; }
 
  public:
-  stack_pool() noexcept : stack_pool{0} {};  // defaul ctor
+  stack_pool() noexcept : stack_pool{0} {};
 
   explicit stack_pool(const size_type n) : pool{}, free_nodes{new_stack()} {
     reserve(n);
-  };  // reserve n nodes in the pool
+  };
 
   stack_pool(const stack_pool&) = default;
   stack_pool(stack_pool&&) = default;
@@ -89,42 +89,41 @@ class stack_pool {
                                    stack_type,
                                    const stack_pool<value_type, stack_type>>;
 
-  auto begin(const stack_type x) {
+  auto begin(const stack_type x) noexcept {
     /**
        Returns an iterator pointing to the top element in the stack.
    */
     return iterator{*this, x};
   }
-  auto end(stack_type) {
+
+  auto end(stack_type) noexcept {
     /**
        Returns an iterator pointing the top of an empty stack.
     */
     return iterator{*this, end()};
   }  // this is not a typo
 
-  auto begin(const stack_type x) const {
+  auto begin(const stack_type x) const noexcept {
     /**
        Returns a const iterator pointing to the top element in the stack.
    */
-
     return const_iterator{*this, x};
   }
-  auto end(stack_type) const {
+  auto end(stack_type) const noexcept {
     /**
        Returns a const iterator pointing the top of an empty stack.
     */
     return const_iterator{*this, end()};
   }
 
-  auto cbegin(const stack_type x) const {
+  auto cbegin(const stack_type x) const noexcept {
     /**
        Returns a const iterator pointing to the top element in the stack.
     */
-
     return const_iterator{*this, x};
   }
 
-  auto cend(stack_type) const {
+  auto cend(stack_type) const noexcept {
     /**
        Returns a const iterator pointing the top of an empty stack.
     */
@@ -136,7 +135,7 @@ class stack_pool {
     Create new empty stack.
     */
     return end();
-  }  // return an empty stack
+  }
 
   void reserve(const size_type n) {
     /**
@@ -165,7 +164,7 @@ class stack_pool {
     /**
        Returns top of empty stack.
      */
-    return stack_type(0);
+    return stack_type{0};
   }
 
   T& value(const stack_type x) {
@@ -200,16 +199,16 @@ class stack_pool {
   };
 
  private:
-  void move_head(stack_type& to, stack_type& from) noexcept {
-    std::swap<stack_type>(next(to), from);
-    std::swap<stack_type>(to, from);
+  void move_head(stack_type& from, stack_type& to) noexcept {
+    std::swap<stack_type>(next(from), to);
+    std::swap<stack_type>(from, to);
     return;
   }
 
   template <typename X>
   stack_type _push(X&& val, stack_type head) {
     if (empty(free_nodes)) {
-      pool.emplace_back(val, head);
+      pool.push_back({std::forward<X>(val), head});
       return pool.size();
     } else {
       value(free_nodes) = std::forward<X>(val);
@@ -248,7 +247,7 @@ class stack_pool {
                         << std::endl;
     move_head(x, free_nodes);
     return x;
-  };
+  }
 
   stack_type free_stack(stack_type x) noexcept {
     /**
@@ -261,5 +260,5 @@ class stack_pool {
     next(tmp) = free_nodes;
     free_nodes = x;
     return end();
-  }  // free entire stack
+  }
 };
