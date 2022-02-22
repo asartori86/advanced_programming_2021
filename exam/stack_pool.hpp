@@ -9,7 +9,7 @@ class _iterator {
   using stack_type = N;
   using stack_pool = S;
   stack_type current;
-  stack_pool* pool;
+  stack_pool* const pool;
 
  public:
   using value_type = T;           // const int
@@ -209,7 +209,7 @@ class stack_pool {
   template <typename X>
   stack_type _push(X&& val, stack_type head) {
     if (empty(free_nodes)) {
-      pool.emplace_back(val, head);  // just for fun
+      pool.emplace_back(val, head); 
       return pool.size();
     } else {
       value(free_nodes) = std::forward<X>(val);
