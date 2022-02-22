@@ -15,7 +15,7 @@ class _iterator {
   using value_type = T;           // const int
   using reference = value_type&;  // const int&
   using pointer = value_type*;    // const int*
-  using difference_type = stack_type;
+  using difference_type = std::ptrdiff_t;
   using iterator_category = std::forward_iterator_tag;
 
   _iterator(stack_pool& pool, stack_type head) : current{head}, pool{&pool} {}
@@ -209,7 +209,7 @@ class stack_pool {
   template <typename X>
   stack_type _push(X&& val, stack_type head) {
     if (empty(free_nodes)) {
-      pool.emplace_back(val, head); 
+      pool.emplace_back(val, head);
       return pool.size();
     } else {
       value(free_nodes) = std::forward<X>(val);
